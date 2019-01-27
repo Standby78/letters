@@ -1,5 +1,8 @@
+
+@import url('https://fonts.googleapis.com/css?family=Acme');
 .App {
   text-align: center;
+  font-family: 'Acme', sans-serif;
 }
 
 .App-header {
@@ -17,8 +20,8 @@
   display: flex;
   justify-content: center;
   font-size: calc(20vw);
-  text-transform: uppercase;
 }
 .letterBlock {
-  padding: 5vw;
+  padding: 3vw;
+  cursor: all-scroll;
 }
