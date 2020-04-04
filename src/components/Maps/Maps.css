@@ -1,0 +1,35 @@
+.flags-container {
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+}
+.flag {
+    width: 500px;
+    height: 500px;
+}
+
+.flag>img {
+    width: 100%;
+}
+
+.text {
+    width: 500px;
+}
+
+.pick {
+    padding: 30px;
+}
+.pick-img{
+    display: block;
+    padding: 30px;
+    width: 80px;
+}
+.message {
+    font-size: 46px;
+    text-align: center;
+}
+img>svg>g {
+    fill: none;
+    stroke: black;
+    stroke-width: 50px;
+}
