@@ -27,9 +27,25 @@
 .message {
     font-size: 46px;
     text-align: center;
+    overflow: hidden;
 }
 img>svg>g {
     fill: none;
     stroke: black;
     stroke-width: 50px;
+}
+
+@keyframes loss {
+    from { display: block; opacity: 1; transform: scale(1,1);}
+    to { display: none; opacity: 0; transform: scale(2,2)}
+}
+
+.msg {
+    opacity: 0;
+}
+.msg.wrong {
+    animation: loss 1s;
+}
+.msg.right {
+    animation: loss .25s;
 }

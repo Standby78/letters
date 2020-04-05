@@ -11,7 +11,8 @@ const Maps = (props) => {
     const [win, setWin] = useState(false);
     const [winner, setWinner] = useState(0);
     const [candidates, setCandidates] = useState([]);
-    const [message, setMessage] = useState('')
+    const [message, setMessage] = useState({right:'', wrong:''})
+    const [reset, setReset] = useState(false)
 
     useEffect(() => {
         console.log("loading");
@@ -27,48 +28,53 @@ const Maps = (props) => {
     }, []);
 
     useEffect(() => {
-        const countriesLength = countries.length;
+        const countriesLength = countries.length-1;
         let tempArray = [];
         for (let i=0; i < 3; i++) {
             let rnd = random(countriesLength);
-            if (tempArray.indexOf(rnd) === -1)
-                tempArray.push(rnd)
+            (tempArray.indexOf(rnd) === -1) ? tempArray.push(rnd) : --i;
+            console.log(i, "loop")
         }
         setCandidates([countries[tempArray[0]], countries[tempArray[1]], countries[tempArray[2]]]);
         setWinner(random(3)); 
         setWin(false)
-    }, [win, countries])
+    }, [win, countries, reset])
 
     const handleClick = (index) => {
         if (winner === index) {
-            setMessage("POBJEDIO SI!!");
-            setTimeout(() => {
-                setWin(true);
-                setMessage('');
-            }, 1500);
+            setMessage({css: 'right', message: 'Točno!!'});
+            setWin(true);
         } else {
-            setMessage("NEMAŠ POJMA!!");
-            setTimeout(() => {
-                setMessage('');
-            }, 1500);
+            setMessage({css: 'wrong', message: 'Pogrešno!!'});
         }
+        setTimeout(() => {
+            setMessage({css:'', message:''});
+        }, 1000);
     }
+
     const getMap = () => {
         try {
             return (candidates[winner] && require(`../../../static/all/${candidates[winner].alpha2Code.toLowerCase()}/vector.svg`));
         } catch {
+            setReset(!reset);
+            console.log("reset", candidates[winner])
             return null;
         }
     }
 
     const picks = (candidates.length > 0) ?
         candidates.map((country, index) => {
-            console.log(country)
             if (props.capital)  {
                 return (
-                    <div onClick={() => handleClick(index)} className="pick">{country && country.capital}</div>
+                    <div
+                        onClick={() => handleClick(index)}
+                        className="pick"
+                    >
+                        {country && ((country.capital !== "") ? country.capital : country.name)}
+                    </div>
                 )
-            }if (props.mapsFlags)  {
+            }
+            if (props.mapsFlags)  {
                 return (
                     <img
                         onClick={() => handleClick(index)}
@@ -101,8 +107,10 @@ const Maps = (props) => {
                 </div>
             </div>
             <div className="message">
-                    {message}
+                <div className={`msg ${message.css}`}>
+                    {message.message}
                 </div>
+            </div>
         </div>
     )
 }

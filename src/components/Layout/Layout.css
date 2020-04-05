@@ -5,3 +5,11 @@
     justify-content: space-between;
     padding: 1.5rem;
 }
+.timer {
+    font-size: 7rem;
+    -webkit-text-stroke: 4px black;
+   background: -webkit-linear-gradient(top, #ffffff 28%,#ffff00 32%,#ff0000 72%);
+   -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  width: 150px;
+}
