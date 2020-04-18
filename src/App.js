@@ -2,15 +2,23 @@ import React, {useEffect, useState } from 'react';
 import Letters from './components/Letters/Letters';
 import Layout from './components/Layout/Layout';
 import Maps from './components/Maps/Maps';
+import GameContext from '../src/context/game.context';
 import './App.css';
 
-const game = [<Maps maps={true} capital={true} />, <Letters />, <Maps flag={true} />, <Maps maps={true} />, <Maps maps={true} mapsFlags={true} />];
+const game = [
+                <Maps maps={true} capital={true} />,
+                <Letters />,
+                <Maps flag={true} />,
+                <Maps maps={true} />,
+                <Maps maps={true} mapsFlags={true} />
+            ];
+
 const gameTimer = 30;
 const App = () => {
     const [timer, setTimer] = useState(gameTimer);
     const [activeGame, setActiveGame] = useState(0);
-
-    const play = true;
+    const [score, setScore] = useState(0);
+    const [bonus, setBonus] = useState(1);
 
     useEffect(() => {
         let time = timer - 1;
@@ -23,12 +31,18 @@ const App = () => {
             setTimer(time)
         }, 1000);
     }, [timer]) // eslint-disable-line
+
+    const gameScore = {
+        score, setScore, bonus, setBonus,
+    }
     return (
-        <div className="app">
-            <Layout timer={timer}>
-                {game[activeGame]}
-            </Layout>
-        </div>
+        <GameContext.Provider value={gameScore}>
+            <div className="app">
+                <Layout timer={timer}>
+                    {game[activeGame]}
+                </Layout>
+            </div>
+        </GameContext.Provider>
     );
 }
 

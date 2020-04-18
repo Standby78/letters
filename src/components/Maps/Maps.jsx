@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import GameContext from '../../context/game.context'
 import './Maps.css'
 
 const random = (max) => {
@@ -14,13 +15,17 @@ const Maps = (props) => {
     const [message, setMessage] = useState({right:'', wrong:''})
     const [reset, setReset] = useState(false)
 
+    const game = useContext(GameContext);
+
     useEffect(() => {
-        console.log("loading");
         async function fetchData() {
             const res = await fetch("https://restcountries.eu/rest/v2/all?fields=name;alpha2Code;alpha3Code;capital;population;flag");
             res
                 .json()
-                .then(res => setCountries(res))
+                .then(res => {
+                    // console.log(res.filter(country => country.population > 3000000));
+                    setCountries(res.filter(country => country.population > 3000000));
+                })
                 .catch(err => setErrors(err));
           }
       
@@ -33,7 +38,6 @@ const Maps = (props) => {
         for (let i=0; i < 3; i++) {
             let rnd = random(countriesLength);
             (tempArray.indexOf(rnd) === -1) ? tempArray.push(rnd) : --i;
-            console.log(i, "loop")
         }
         setCandidates([countries[tempArray[0]], countries[tempArray[1]], countries[tempArray[2]]]);
         setWinner(random(3)); 
@@ -43,9 +47,12 @@ const Maps = (props) => {
     const handleClick = (index) => {
         if (winner === index) {
             setMessage({css: 'right', message: 'Točno!!'});
+            game.setBonus(game.bonus+1);
+            game.setScore(game.score+(10*game.bonus))
             setWin(true);
         } else {
             setMessage({css: 'wrong', message: 'Pogrešno!!'});
+            game.setBonus(1);
         }
         setTimeout(() => {
             setMessage({css:'', message:''});
