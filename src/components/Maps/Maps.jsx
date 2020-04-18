@@ -46,16 +46,16 @@ const Maps = (props) => {
 
     const handleClick = (index) => {
         if (winner === index) {
-            setMessage({css: 'right', message: 'Točno!!'});
+            setMessage({css: 'right', message: 'Točno!!', bonus: 'bonus'});
             game.setBonus(game.bonus+1);
             game.setScore(game.score+(10*game.bonus))
             setWin(true);
         } else {
-            setMessage({css: 'wrong', message: 'Pogrešno!!'});
+            setMessage({css: 'wrong', message: 'Pogrešno!!', bonus: ''});
             game.setBonus(1);
         }
         setTimeout(() => {
-            setMessage({css:'', message:''});
+            setMessage({css:'', message:'', bonus: ''});
         }, 1000);
     }
 
@@ -112,6 +112,9 @@ const Maps = (props) => {
                 <div className="text">
                     {picks}
                 </div>
+            </div>
+            <div className={`bonus-message ${message.bonus}`}>
+                {game.bonus > 2 ? `x ${game.bonus-1}` : ''}
             </div>
             <div className="message">
                 <div className={`msg ${message.css}`}>

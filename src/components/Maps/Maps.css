@@ -49,3 +49,13 @@ img>svg>g {
 .msg.right {
     animation: loss .25s;
 }
+.bonus-message {
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    font-size: 5rem;
+    opacity: 0;
+}
+.bonus-message.bonus {
+    animation: loss .5s;
+}
